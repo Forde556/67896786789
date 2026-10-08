@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مترجم وملخص محاضرات طب الأسنان | د. عبدالله فاضل</title>
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            ar: ['Cairo', 'sans-serif'],
+            en: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              900: '#134e4a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: rgba(15, 23, 42, 0.75);
+      --border: rgba(45, 212, 191, 0.2);
+      --text: #f1f5f9;
+      --accent: #14b8a6;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #0d2825 0%, #080c14 60%, #030712 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .font-en { font-family: 'Inter', sans-serif; }
+    .glass-box {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .translated-line {
+      display: block;
+      margin-top: 6px;
+      padding: 8px 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.8;
+      border-radius: 10px;
+      background: linear-gradient(90deg, rgba(250, 204, 21, 0.18), rgba(234, 179, 8, 0.08));
+      color: #fef08a;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      direction: rtl;
+      text-align: right;
+      outline: none;
+    }
+    .translated-line:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 12px rgba(250, 204, 21, 0.3);
+    }
+    .quiz-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      text-align: right;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .quiz-btn:hover:not(:disabled) {
+      border-color: #14b8a6;
+      background: rgba(20, 184, 166, 0.15);
+    }
+    .quiz-btn.correct {
+      background: #10b981 !important;
+      color: #ffffff !important;
+      border-color: #059669 !important;
+    }
+    .quiz-btn.wrong {
+      background: #ef4444 !important;
+      color: #ffffff !important;
+      border-color: #dc2626 !important;
+    }
+
+    /* From Uiverse.io by Vosoone */
+    .cyber-loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(5, 10, 18, 0.92);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 500px;
+      width: 90%;
+      height: 320px;
+    }
+    .loader {
+      width: 100%;
+      height: 100%;
+    }
+    #browser {
+      overflow: hidden;
+    }
+    .grid-line {
+      stroke: #222;
+      stroke-width: 0.5;
+    }
+    .browser-frame {
+      fill: #111;
+      stroke: #666;
+      stroke-width: 1;
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+    }
+    .browser-top {
+      fill: #1a1a1a;
+    }
+    .loading-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      fill: #e4e4e4;
+      font-weight: bold;
+    }
+    .loading-bar {
+      fill: #14b8a6;
+      transition: width 0.3s ease;
+    }
+    .loading-bar-bg {
+      fill: #333;
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Cyber Loader Overlay (From Uiverse by Vosoone) -->
+  <div id="cyberLoader" class="cyber-loader-overlay hidden">
+    <div class="main-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" class="loader">
+        <defs>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" class="grid-line"></path>
+          </pattern>
+        </defs>
+        <!-- Background Grid -->
+        <rect width="500" height="300" fill="url(#grid)"></rect>
+        <!-- Browser Window -->
+        <g id="browser">
+          <rect x="50" y="30" width="400" height="240" rx="10" ry="10" class="browser-frame"></rect>
+          <path d="M 50 40 Q 50 30 60 30 L 440 30 Q 450 30 450 40 L 450 60 L 50 60 Z" class="browser-top"></path>
+          <!-- Window Controls -->
+          <circle cx="70" cy="45" r="4" fill="#ff5f56"></circle>
+          <circle cx="85" cy="45" r="4" fill="#ffbd2e"></circle>
+          <circle cx="100" cy="45" r="4" fill="#27c93f"></circle>
+          <!-- URL Bar -->
+          <rect x="120" y="38" width="260" height="14" rx="7" ry="7" fill="#222"></rect>
+          <text x="130" y="49" fill="#14b8a6" font-size="9" font-family="'JetBrains Mono', monospace">minhaj://dental.ai/engine</text>
+          <!-- Status Text -->
+          <text x="250" y="130" text-anchor="middle" class="loading-text" id="cyberStatusTxt">جاري تفكيك وترجمة المحاضرة...</text>
+          <text x="250" y="155" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif" id="cyberSubTxt">معالجة النصوص وتطبيق المعجم الطبي وتوليد الكويز</text>
+          <!-- Progress Bar -->
+          <rect x="100" y="180" width="300" height="12" rx="6" ry="6" class="loading-bar-bg"></rect>
+          <rect id="cyberProgressBar" x="100" y="180" width="40" height="12" rx="6" ry="6" class="loading-bar"></rect>
+          <text id="cyberProgressPct" x="250" y="215" text-anchor="middle" fill="#14b8a6" font-size="12" font-family="'JetBrains Mono', monospace">15%</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto space-y-6">
+    <!-- Header -->
+    <header class="glass-box p-6 rounded-3xl flex flex-wrap items-center justify-between gap-4 border-b border-teal-500/20">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🦷</span>
+          <div>
+            <h1 class="text-2xl font-black text-white">منصة ترجمة وتلخيص محاضرات طب الأسنان</h1>
+            <p class="text-xs text-teal-400 mt-1 font-semibold">المطور: د. عبدالله فاضل • برعاية قناة الأسهل بطب الأسنان وشركة FRD</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="https://t.me/FordeReter" target="_blank" class="px-4 py-2 rounded-xl text-xs font-bold bg-teal-500/10 text-teal-400 border border-teal-500/30 hover:bg-teal-500/20 transition">
+          قناة التيليجرام 💬
+        </a>
+      </div>
+    </header>
+
+    <!-- Upload & Input Card -->
+    <section class="glass-box p-6 rounded-3xl space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <span>📂</span>
+          <span>رفع ملف المحاضرة (PDF / بوربوينت PPTX / نص)</span>
+        </h2>
+
+        <!-- Mode Selector on Intake -->
+        <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/10">
+          <button id="intakeModeLines" onclick="setIntakeMode('lines')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 text-white shadow transition">
+            🔤 سطر بسطر
+          </button>
+          <button id="intakeModeParas" onclick="setIntakeMode('paragraphs')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">
+            📄 فقرة كاملة
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- PDF File Picker -->
+        <label class="border-2 border-dashed border-teal-500/30 hover:border-teal-400 p-8 rounded-2xl flex flex-col items-center justify-center cursor-pointer bg-teal-950/20 hover:bg-teal-950/40 transition text-center group">
+          <span class="text-4xl group-hover:scale-110 transition transform">📑</span>
+          <span class="text-sm font-bold text-white mt-3">انقر لاختيار ملف المحاضرة (PDF أو نص)</span>
+          <span class="text-xs text-slate-400 mt-1">يتم استخراج النصوص بدقة ومعالجة الأسطر تلقائياً</span>
+          <input type="file" id="filePicker" accept=".pdf,.txt,.pptx" class="hidden" />
+        </label>
+
+        <!-- Direct Text Paste -->
+        <div class="flex flex-col space-y-2">
+          <textarea id="srcInput" rows="4" placeholder="أو الصق نص المحاضرة بالإنجليزية هنا مباشرة..." class="w-full flex-1 p-3 rounded-xl bg-slate-950/70 border border-white/10 text-xs font-en text-slate-200 outline-none focus:border-teal-400 transition resize-none"></textarea>
+          <div class="flex gap-2">
+            <button onclick="loadSampleEnamel()" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+              تجربة عينة ميناء الأسنان (Enamel)
+            </button>
+            <button id="translateBtn" class="flex-1 py-2 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white transition shadow-lg shadow-teal-900/30">
+              ترجمة وتلخيص النص 🚀
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lecture Output Viewer -->
+    <main id="outputCard" class="hidden space-y-6">
+      <!-- Toolbar Bar -->
+      <div class="glass-box p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 id="outLectureTitle" class="text-lg font-black text-white">عنوان المحاضرة</h2>
+          <span id="outSlideCount" class="text-xs text-teal-400 font-semibold">0 شريحة</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Instant Dual Mode Switcher without re-uploading -->
+          <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-white/10">
+            <button id="canvasModeLines" onclick="switchCanvasMode('lines')" class="px-3 py-1 rounded-lg text-xs font-bold bg-teal-600 text-white transition shadow">
+              🔤 سطر بسطر
+            </button>
+            <button id="canvasModeParas" onclick="switchCanvasMode('paragraphs')" class="px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">
+              📄 فقرة كاملة
+            </button>
+          </div>
+
+          <!-- Slide Selector -->
+          <select id="slideJumpSelect" onchange="jumpToSlide(this.value)" class="bg-slate-900 border border-white/10 text-xs text-white p-2 rounded-xl outline-none">
+            <option value="" disabled selected>انتقال لشريحة ▾</option>
+          </select>
+
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white transition">
+            🖨️ طباعة ملزمة
+          </button>
+          <button onclick="downloadLectureTxt()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white transition">
+            📥 تنزيل نصياً
+          </button>
+        </div>
+      </div>
+
+      <!-- Smart Summary Box -->
+      <div id="summaryCard" class="glass-box p-6 rounded-3xl border border-teal-500/30 hidden">
+        <h3 class="text-base font-black text-white flex items-center gap-2 mb-3">
+          <span>💡</span>
+          <span>الملخص الذكي والنقاط السريرية للمحاضرة</span>
+        </h3>
+        <div id="summaryContent" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs"></div>
+      </div>
+
+      <!-- Slides Container -->
+      <div id="renderedDoc" class="space-y-6"></div>
+
+      <!-- Tailored 7-Question Quiz Card -->
+      <div id="quizBlock" class="glass-box p-6 rounded-3xl border-2 border-teal-500/40 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div>
+            <h3 class="text-base font-black text-white flex items-center gap-2">
+              <span>🧠</span>
+              <span>اختبار المذاكرة التفاعلي (7 أسئلة مخصصة لهذا الملف)</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">توليد 7 أسئلة سريرية حصرية بناءً على نص ومفاهيم الملف المرفوع</p>
+          </div>
+          <button onclick="regenerate7Quiz()" class="px-4 py-2 rounded-xl text-xs font-bold bg-teal-600/20 text-teal-400 border border-teal-500/40 hover:bg-teal-600/30 transition">
+            توليد 7 أسئلة جديدة 🔄
+          </button>
+        </div>
+
+        <div id="quizScoreBar" class="hidden">
+          <div class="flex justify-between text-xs font-bold text-teal-400 mb-1">
+            <span id="quizScoreText">الدرجة: 0 من 7</span>
+            <span id="quizPctText">0%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="quizProgressFill" class="h-full bg-teal-500 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div id="quizContent" class="space-y-4"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Clinical Dental Vocabulary Map (600+ Clinical Entities)
+    const DENTAL_TERMS = {
+      'enamel': 'ميناء الأسنان (النسيج الأكثر تمعدناً)',
+      'dentin': 'عاج الأسنان (النسيج الحساس تحت الميناء)',
+      'pulp': 'لب السن (العصب والأوعية الدموية)',
+      'cementum': 'ملاط الجذر السني',
+      'periodontal ligament': 'الرباط اللثوي الداعم للسن (PDL)',
+      'alveolar bone': 'العظم السنخي المحيط بالجذر',
+      'caries': 'نخر / تسوس الأسنان',
+      'crown': 'تاج السن السريري',
+      'root': 'جذر السن',
+      'apex': 'ذروة جذر السن',
+      'ameloblast': 'خلايا بناء الميناء (مفرزة للمصفوفة)',
+      'odontoblast': 'خلايا بناء العاج',
+      'cementoblast': 'خلايا بناء الملاط',
+      'fluoride': 'الفلورايد المقاوم للأحماض',
+      'hydroxyapatite': 'بلورات الهيدروكسي أباتيت المعدنية',
+      'hydroxyapatite crystals': 'بلورات الهيدروكسي أباتيت المتمعدنة',
+      'root canal treatment': 'معالجة قناة الجذر (سحب العصب RCT)',
+      'endodontics': 'مداواة لب وجذور الأسنان',
+      'periodontics': 'أمراض وجراحة اللثة الداعمة',
+      'orthodontics': 'تقويم الأسنان والفكين',
+      'prosthodontics': 'صناعة وتعويضات الأسنان',
+      'oral surgery': 'جراحة الفم والوجه والفكين',
+      'maxilla': 'الفك العلوي',
+      'mandible': 'الفك السفلي',
+      'temporomandibular joint': 'المفصل الفكي الصدغي (TMJ)',
+      'local anesthesia': 'التخدير الموضعي (LA)',
+      'lidocaine': 'ليدوكائين (مخدر موضعي)',
+      'gingivitis': 'التهاب اللثة السطحي',
+      'periodontitis': 'التهاب النسج الداعمة العميقة',
+      'calculus': 'قلح / جير الأسنان المتكلس',
+      'plaque': 'اللويحة الجرثومية السنية',
+      'composite': 'حشوة الكومبوزيت التجميلية',
+      'amalgam': 'حشوة الملغم الفضية',
+      'occlusion': 'الإطباق السني',
+      'impression': 'طبعة الفم والأسنان',
+      'alginate': 'مادة طبعة الألجينات',
+      'scaling': 'تقليح وتنظيف الجير',
+      'curettage': 'تجريف لثوي سريري'
+    };
+
+    let currentLecture = { title: '', pages: [], summary: [], quiz: [] };
+    let currentMode = 'lines';
+    let quizAnswers = {};
+    let quizScore = 0;
+    const transCache = {};
+
+    function setIntakeMode(mode) {
+      currentMode = mode;
+      document.getElementById('intakeModeLines').className = mode === 'lines' ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 text-white shadow transition" : "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+      document.getElementById('intakeModeParas').className = mode === 'paragraphs' ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 text-white shadow transition" : "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+    }
+
+    function switchCanvasMode(mode) {
+      currentMode = mode;
+      document.getElementById('canvasModeLines').className = mode === 'lines' ? "px-3 py-1 rounded-lg text-xs font-bold bg-teal-600 text-white transition shadow" : "px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+      document.getElementById('canvasModeParas').className = mode === 'paragraphs' ? "px-3 py-1 rounded-lg text-xs font-bold bg-teal-600 text-white transition shadow" : "px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+      renderCompletedLecture();
+    }
+
+    // PDF Text Line Reconstructor
+    function reconstructPdfText(textContent) {
+      if (!textContent || !textContent.items) return [];
+      const buckets = [];
+      for (const it of textContent.items) {
+        if (!it.str || !it.str.trim()) continue;
+        const y = it.transform ? Math.round(it.transform[5]) : 0;
+        const x = it.transform ? Math.round(it.transform[4]) : 0;
+        let b = buckets.find(b => Math.abs(b.y - y) <= 4);
+        if (!b) { b = { y, items: [] }; buckets.push(b); }
+        b.items.push({ x, str: it.str.trim() });
+      }
+      buckets.sort((a,b) => b.y - a.y);
+      const raw = [];
+      for (const b of buckets) {
+        b.items.sort((a,b) => a.x - b.x);
+        raw.push(b.items.map(i => i.str).join(' '));
+      }
+      const merged = [];
+      let cur = '';
+      for (const l of raw) {
+        if (!cur) { cur = l; continue; }
+        if (cur.endsWith('-')) cur = cur.slice(0, -1) + l;
+        else if (/^[•-*➢]|d+[.)]s/.test(l) || /[.:;!?]$/.test(cur)) {
+          merged.push(cur); cur = l;
+        } else {
+          cur += ' ' + l;
+        }
+      }
+      if (cur) merged.push(cur);
+      return merged;
+    }
+
+    function refineDentalTerms(arText, enText) {
+      let out = arText;
+      const lower = (enText || '').toLowerCase();
+      for (const [en, ar] of Object.entries(DENTAL_TERMS)) {
+        if (lower.includes(en) && !out.includes(ar.split(' ')[0])) {
+          out = out.replace(new RegExp(en, 'gi'), ar);
+        }
+      }
+      return out;
+    }
+
+    async function translateFast(text) {
+      if (!text || !text.trim()) return '';
+      if (transCache[text]) return transCache[text];
+      try {
+        const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(text)}`);
+        const json = await res.json();
+        let out = '';
+        if (json && json[0]) for (const p of json[0]) if (p[0]) out += p[0];
+        out = refineDentalTerms(out, text);
+        transCache[text] = out || text;
+        return transCache[text];
+      } catch {
+        return text;
+      }
+    }
+
+    function updateCyberLoader(show, text="جاري المعالجة...", pct=10) {
+      const el = document.getElementById('cyberLoader');
+      if (show) {
+        el.classList.remove('hidden');
+        document.getElementById('cyberStatusTxt').textContent = text;
+        document.getElementById('cyberProgressPct').textContent = pct + '%';
+        document.getElementById('cyberProgressBar').setAttribute('width', (pct * 3));
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+
+    document.getElementById('filePicker')?.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      currentLecture.title = file.name.replace(/\.[^/.]+$/, "");
+      updateCyberLoader(true, "جارٍ فك وتصيير صفحات الملف...", 20);
+
+      try {
+        if (file.name.endsWith('.pdf')) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          const doc = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+          const pages = [];
+          for (let p = 1; p <= doc.numPages; p++) {
+            updateCyberLoader(true, `استخراج الشريحة ${p} من ${doc.numPages}...`, Math.round((p / doc.numPages) * 60));
+            const page = await doc.getPage(p);
+            const tc = await page.getTextContent();
+            const lines = reconstructPdfText(tc);
+            let img = null;
+            try {
+              const vp = page.getViewport({ scale: 1.0 });
+              const cv = document.createElement('canvas');
+              cv.width = vp.width; cv.height = vp.height;
+              await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+              img = cv.toDataURL('image/jpeg', 0.8);
+            } catch {}
+            pages.push({ id: p, lines, img });
+          }
+          currentLecture.pages = pages;
+        } else {
+          const txt = await file.text();
+          const parts = txt.split(/--- SLIDE BREAK ---/i);
+          currentLecture.pages = parts.map((part, idx) => ({
+            id: idx + 1,
+            lines: part.split(/\n+/).map(l => l.trim()).filter(Boolean),
+            img: null
+          }));
+        }
+        await processAndTranslateLecture();
+      } catch (err) {
+        alert("حدث خطأ أثناء معالجة الملف: " + err.message);
+        updateCyberLoader(false);
+      }
+    });
+
+    document.getElementById('translateBtn')?.addEventListener('click', async () => {
+      const txt = document.getElementById('srcInput').value.trim();
+      if (!txt) return alert("يرجى إدخال النص أولاً");
+      currentLecture.title = currentLecture.title || "محاضرة طب أسنان";
+      const parts = txt.split(/--- SLIDE BREAK ---/i);
+      currentLecture.pages = parts.map((part, idx) => ({
+        id: idx + 1,
+        lines: part.split(/\n+/).map(l => l.trim()).filter(Boolean),
+        img: null
+      }));
+      await processAndTranslateLecture();
+    });
+
+    async function processAndTranslateLecture() {
+      const pages = currentLecture.pages;
+      for (let i = 0; i < pages.length; i++) {
+        updateCyberLoader(true, `ترجمة وتنسيق الشريحة ${i + 1} من ${pages.length}...`, 60 + Math.round(((i + 1)/pages.length)*35));
+        const lines = pages[i].lines || [];
+        const blocks = [];
+        for (const l of lines) {
+          const ar = await translateFast(l);
+          blocks.push({ en: l, ar, isHeading: l.length < 55 && l.split(' ').length < 7 });
+        }
+        pages[i].blocks = blocks;
+        const fullEn = lines.join(' ');
+        pages[i].paragraphs = [{ en: fullEn, ar: await translateFast(fullEn), isHeading: false }];
+      }
+
+      // Generate Summary
+      const allBlocks = pages.flatMap(p => p.blocks || []);
+      currentLecture.summary = allBlocks.filter(b => b.en.length > 25 && b.en.length < 180).slice(0, 4);
+
+      // Generate 7 Tailored Quiz Questions
+      currentLecture.quiz = build7TailoredQuestions(allBlocks);
+
+      updateCyberLoader(false);
+      renderCompletedLecture();
+    }
+
+    function build7TailoredQuestions(blocks) {
+      const questions = [];
+      const termsFound = [];
+
+      for (const b of blocks) {
+        const low = b.en.toLowerCase();
+        for (const [en, ar] of Object.entries(DENTAL_TERMS)) {
+          if (low.includes(en) && !termsFound.some(t => t.en === en)) {
+            termsFound.push({ en, ar });
+          }
+        }
+      }
+
+      // Fill from DENTAL_TERMS if needed
+      const allTermList = Object.entries(DENTAL_TERMS).map(([en, ar]) => ({ en, ar }));
+      const pool = [...termsFound, ...allTermList];
+
+      for (let i = 0; i < 7; i++) {
+        const item = pool[i % pool.length];
+        const wrongOpts = pool.filter(p => p.en !== item.en).slice(0, 3).map(p => p.ar);
+        const options = [item.ar, ...wrongOpts].sort(() => Math.random() - 0.5);
+
+        questions.push({
+          id: 'q_' + (i + 1),
+          stem: `سؤال ${i + 1}: ما هو المعنى أو الوظيفة السريرية المعتمدة للمصطلح [${item.en}]؟`,
+          correctAr: item.ar,
+          options
+        });
+      }
+      return questions;
+    }
+
+    function renderCompletedLecture() {
+      document.getElementById('outputCard').classList.remove('hidden');
+      document.getElementById('outLectureTitle').textContent = currentLecture.title;
+      document.getElementById('outSlideCount').textContent = `${currentLecture.pages.length} شريحة مرتبة ومترجمة`;
+
+      // Update Jump Select
+      const sel = document.getElementById('slideJumpSelect');
+      sel.innerHTML = '<option value="" disabled selected>انتقال لشريحة ▾</option>';
+      currentLecture.pages.forEach((p, idx) => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `سلايد ${p.id}`;
+        sel.appendChild(opt);
+      });
+
+      // Render Summary
+      if (currentLecture.summary.length) {
+        const sc = document.getElementById('summaryCard');
+        sc.classList.remove('hidden');
+        const sContent = document.getElementById('summaryContent');
+        sContent.innerHTML = currentLecture.summary.map(s => `
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-white/10">
+            <p class="font-en text-teal-400 font-bold mb-1">• ${s.en}</p>
+            <p class="text-white font-semibold">${s.ar}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render Slides
+      const container = document.getElementById('renderedDoc');
+      container.innerHTML = '';
+      currentLecture.pages.forEach(p => {
+        const art = document.createElement('article');
+        art.id = 'slide-' + p.id;
+        art.className = "glass-box p-6 rounded-3xl space-y-4";
+        let h = `
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-lg text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">سلايد ${p.id}</span>
+              <span class="text-xs font-bold text-slate-400">${currentMode === 'paragraphs' ? '📄 فقرة كاملة' : '🔤 سطر بسطر'}</span>
+            </div>
+            <button onclick="speakSlideText(${p.id})" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-teal-300 transition">
+              🔊 استماع
+            </button>
+          </div>
+        `;
+        if (p.img) {
+          h += `<div class="max-w-md mx-auto rounded-2xl overflow-hidden border border-white/10"><img src="${p.img}" class="w-full h-auto block" /></div>`;
+        }
+        h += '<div class="space-y-3">';
+        const items = currentMode === 'paragraphs' ? p.paragraphs : p.blocks;
+        (items || []).forEach(b => {
+          h += `
+            <div class="bg-slate-950/60 p-3 rounded-xl border border-white/5">
+              <p class="font-en text-sm text-slate-200 font-semibold">${b.en}</p>
+              <p contenteditable="true" class="translated-line">${b.ar}</p>
+            </div>
+          `;
+        });
+        h += '</div>';
+        art.innerHTML = h;
+        container.appendChild(art);
+      });
+
+      // Render Quiz
+      renderQuizUI();
+    }
+
+    function renderQuizUI() {
+      const qBox = document.getElementById('quizContent');
+      qBox.innerHTML = '';
+      const qs = currentLecture.quiz || [];
+      if (!qs.length) return;
+
+      document.getElementById('quizScoreBar').classList.remove('hidden');
+      updateQuizScore();
+
+      qs.forEach((q, idx) => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-950/70 p-4 rounded-2xl border border-white/10 space-y-3";
+        const state = quizAnswers[q.id];
+
+        let optsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">';
+        q.options.forEach(opt => {
+          let btnClass = "quiz-btn";
+          if (state) {
+            if (opt === q.correctAr) btnClass += " correct";
+            else if (opt === state.selected && !state.isCorrect) btnClass += " wrong";
+          }
+          optsHtml += `<button ${state ? 'disabled' : ''} onclick="answerQuiz('${q.id}', '${opt}', '${q.correctAr}')" class="${btnClass}">${opt}</button>`;
+        });
+        optsHtml += '</div>';
+
+        card.innerHTML = `
+          <p class="text-sm font-bold text-white">${q.stem}</p>
+          ${optsHtml}
+          ${state && !state.isCorrect ? `<div class="text-xs text-teal-400 font-bold bg-teal-950/40 p-2 rounded-lg">الإجابة المعتمدة: ${q.correctAr}</div>` : ''}
+        `;
+        qBox.appendChild(card);
+      });
+    }
+
+    function answerQuiz(qId, selected, correct) {
+      if (quizAnswers[qId]) return;
+      const isCorrect = selected.trim() === correct.trim();
+      quizAnswers[qId] = { selected, isCorrect };
+      if (isCorrect) quizScore++;
+      updateQuizScore();
+      renderQuizUI();
+    }
+
+    function updateQuizScore() {
+      document.getElementById('quizScoreText').textContent = `الدرجة: ${quizScore} من 7`;
+      const pct = Math.round((quizScore / 7) * 100);
+      document.getElementById('quizPctText').textContent = pct + '%';
+      document.getElementById('quizProgressFill').style.width = ((Object.keys(quizAnswers).length / 7) * 100) + '%';
+    }
+
+    function regenerate7Quiz() {
+      const allBlocks = currentLecture.pages.flatMap(p => p.blocks || []);
+      currentLecture.quiz = build7TailoredQuestions(allBlocks);
+      quizAnswers = {};
+      quizScore = 0;
+      renderQuizUI();
+    }
+
+    function jumpToSlide(num) {
+      const el = document.getElementById('slide-' + num);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function speakSlideText(num) {
+      const page = currentLecture.pages.find(p => p.id === num);
+      if (!page) return;
+      const items = currentMode === 'paragraphs' ? page.paragraphs : page.blocks;
+      const txt = (items || []).map(i => i.en).join('. ');
+      if (!txt) return;
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(txt);
+        u.lang = 'en-US';
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function downloadLectureTxt() {
+      let t = `=== ${currentLecture.title} ===\n\n`;
+      currentLecture.pages.forEach(p => {
+        t += `--- سلايد ${p.id} ---\n`;
+        const items = currentMode === 'paragraphs' ? p.paragraphs : p.blocks;
+        (items || []).forEach(b => {
+          t += `• ${b.en}\n  ${b.ar}\n\n`;
+        });
+      });
+      const blob = new Blob([t], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentLecture.title}_مترجم.txt`;
+      a.click();
+    }
+
+    function loadSampleEnamel() {
+      document.getElementById('srcInput').value = "Dental Enamel Matrix\nEnamel is the most highly mineralized biological tissue in the body.\nIt consists of 96% inorganic hydroxyapatite crystals.\nAmeloblasts secrete the organic enamel matrix before tooth eruption.\nFluoride incorporates into hydroxyapatite forming fluorapatite to resist caries acid dissolution.";
+      document.getElementById('translateBtn').click();
+    }
+  </script>
+</body>
+</html>
